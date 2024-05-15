@@ -61,9 +61,9 @@ public class CartPage {
         return cartItems.size();
     }
 
-    public String getTotalPrice() {
+    public int getTotalPrice() {
         wait.until(ExpectedConditions.visibilityOf(totalPrice));
-        return totalPrice.getText();
+        return Integer.parseInt(totalPrice.getText());
     }
 
     public void placeOrder() {

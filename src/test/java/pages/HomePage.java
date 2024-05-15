@@ -37,6 +37,15 @@ public class HomePage {
     @FindBy(id = "signin2")
     private WebElement signUpButton;
 
+    @FindBy(id = "sign-username")
+    private WebElement signUpUsernameField;
+
+    @FindBy(id = "sign-password")
+    private WebElement signUpPasswordField;
+
+    @FindBy(css = "button[onclick='register()']")
+    private WebElement signUpSubmitButton;
+
     @FindBy(css = ".list-group a")
     private WebElement categories;
 
@@ -74,6 +83,38 @@ public class HomePage {
         return welcomeMessage.getText().contains("Welcome " + username);
     }
 
+    public void clickSignUpButton() {
+        wait.until(ExpectedConditions.visibilityOf(signUpButton));
+        signUpButton.click();
+    }
+
+    public void enterSignUpUsername(String username) {
+        wait.until(ExpectedConditions.visibilityOf(signUpUsernameField));
+        signUpUsernameField.sendKeys(username);
+    }
+
+    public void enterSignUpPassword(String password) {
+        wait.until(ExpectedConditions.visibilityOf(signUpPasswordField));
+        signUpPasswordField.sendKeys(password);
+    }
+
+    public void submitSignUp() {
+        wait.until(ExpectedConditions.elementToBeClickable(signUpSubmitButton));
+        signUpSubmitButton.click();
+    }
+
+    public void acceptAlert() {
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+    }
+
+    public boolean isSignUpSuccessful() {
+        wait.until(ExpectedConditions.alertIsPresent());
+        String alertText = driver.switchTo().alert().getText();
+        driver.switchTo().alert().accept();
+        return alertText.contains("Sign up successful");
+    }
+
     public void clickOnCategory() {
         wait.until(ExpectedConditions.visibilityOf(categories));
         categories.click();
@@ -90,7 +131,7 @@ public class HomePage {
     }
 
     public void logout() {
-        WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(300)); // Increased wait time for logout
+        WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(30)); // Increased wait time for logout
         longWait.until(ExpectedConditions.elementToBeClickable(logoutButton));
         logoutButton.click();
     }
