@@ -41,8 +41,8 @@ public class VerifyProductDetailsTest {
 
     @Test
     public void userLoginVerification() {
-        String username = "domat98217";
-        String password = "domat98217";
+        String username = "domat321535";
+        String password = "password123";
 
         homePage.clickLoginButton();
         homePage.enterUsername(username);
@@ -51,12 +51,15 @@ public class VerifyProductDetailsTest {
 
         Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
     }
-
+    /**
+     * TC001
+     * Verify Product Details
+     * **/
     @Test
     public void verifyProductDetails() {
         // Perform login first
-        String username = "domat98217";
-        String password = "domat98217";
+        String username = "domat321535";
+        String password = "password123";
         homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
@@ -71,8 +74,8 @@ public class VerifyProductDetailsTest {
     @Test
     public void addToCart() {
         // Perform login first
-        String username = "domat98217";
-        String password = "domat98217";
+        String username = "domat321535";
+        String password = "password123";
         homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
@@ -82,14 +85,14 @@ public class VerifyProductDetailsTest {
         homePage.clickOnCategory();
         homePage.clickOnFirstProduct();
         productPage.addToCart();
-        // Additional verification can be added here if needed
+
     }
 
     @Test
     public void completePurchase() {
         // Perform login first
-        String username = "domat98217";
-        String password = "domat98217";
+        String username = "domat321535";
+        String password = "password123";
         homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
@@ -119,9 +122,9 @@ public class VerifyProductDetailsTest {
 
     @Test
     public void userLogoutVerification() {
-        // Perform login first
-        String username = "domat98217";
-        String password = "domat98217";
+
+        String username = "domat321535";
+        String password = "password123";
         homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);

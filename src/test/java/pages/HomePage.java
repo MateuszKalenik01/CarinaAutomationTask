@@ -143,13 +143,3 @@ public class HomePage {
     }
 }
 
-
-
-
-/*Create simple java test project with selenium and testNG as dependencies.
-Goal: learn PageObject and PageFactory pattern, improve knowledge of maven, practice selenium and github usage
-Details:
-4. Use PageObject and PageFactory patterns for that
-5. Use css selectors for your web elements (https://www.w3schools.com/cssref/css_selectors.asp)
-6. Start standalone selenium server with chromedriver and debug implemented test on it
-*/
