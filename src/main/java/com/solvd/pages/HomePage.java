@@ -40,33 +40,27 @@ public class HomePage extends AbstractPage {
     }
 
     public void enterUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOf(usernameField));
-        usernameField.sendKeys(username);
+        sendKeys(usernameField, username);
     }
 
     public void enterPassword(String password) {
-        wait.until(ExpectedConditions.visibilityOf(passwordField));
-        passwordField.sendKeys(password);
+        sendKeys(passwordField, password);
     }
 
     public void submitLogin() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginSubmitButton));
-        loginSubmitButton.click();
+        click(loginSubmitButton);
     }
 
     public void enterSignUpUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOf(signUpUsernameField));
-        signUpUsernameField.sendKeys(username);
+        sendKeys(signUpUsernameField, username);
     }
 
     public void enterSignUpPassword(String password) {
-        wait.until(ExpectedConditions.visibilityOf(signUpPasswordField));
-        signUpPasswordField.sendKeys(password);
+        sendKeys(signUpPasswordField, password);
     }
 
     public void submitSignUp() {
-        wait.until(ExpectedConditions.elementToBeClickable(signUpSubmitButton));
-        signUpSubmitButton.click();
+        click(signUpSubmitButton);
     }
 
     public void acceptAlert() {
@@ -82,7 +76,6 @@ public class HomePage extends AbstractPage {
     }
 
     public void clickOnFirstProduct() {
-        wait.until(ExpectedConditions.visibilityOf(firstProduct));
-        firstProduct.click();
+        click(firstProduct);
     }
 }

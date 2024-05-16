@@ -3,15 +3,10 @@ package com.solvd.components;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.solvd.pages.AbstractPage;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class MenuComponent {
-    WebDriver driver;
-    WebDriverWait wait;
+public class MenuComponent extends AbstractPage {
 
     @FindBy(id = "login2")
     private WebElement loginButton;
@@ -38,44 +33,35 @@ public class MenuComponent {
     private WebElement aboutUsButton;
 
     public MenuComponent(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public void clickLoginButton() {
-        wait.until(ExpectedConditions.visibilityOf(loginButton));
-        loginButton.click();
+        click(loginButton);
     }
 
     public void clickSignUpButton() {
-        wait.until(ExpectedConditions.visibilityOf(signUpButton));
-        signUpButton.click();
+        click(signUpButton);
     }
 
     public void clickLogoutButton() {
-        wait.until(ExpectedConditions.visibilityOf(logoutButton));
-        logoutButton.click();
+        click(logoutButton);
     }
 
     public void clickCartButton() {
-        wait.until(ExpectedConditions.visibilityOf(cartButton));
-        cartButton.click();
+        click(cartButton);
     }
 
     public void clickHomeButton() {
-        wait.until(ExpectedConditions.visibilityOf(homeButton));
-        homeButton.click();
+        click(homeButton);
     }
 
     public void clickContactButton() {
-        wait.until(ExpectedConditions.visibilityOf(contactButton));
-        contactButton.click();
+        click(contactButton);
     }
 
     public void clickAboutUsButton() {
-        wait.until(ExpectedConditions.visibilityOf(aboutUsButton));
-        aboutUsButton.click();
+        click(aboutUsButton);
     }
 
     public boolean isUserLoggedIn(String username) {
@@ -89,3 +75,4 @@ public class MenuComponent {
         return loginButton.isDisplayed() && signUpButton.isDisplayed();
     }
 }
+

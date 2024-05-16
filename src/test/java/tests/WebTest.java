@@ -6,11 +6,11 @@ import com.solvd.pages.*;
 import java.util.List;
 import java.util.UUID;
 
-public class WebTest extends AbstractWebTest {
+public class WebTest extends AbstractTest {
 
     @Test
     public void validUserLoginVerification() {
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         String username = "domat321535";
         String password = "password123";
         homePage.getMenu().clickLoginButton();
@@ -22,8 +22,8 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void verifyProductDetails() {
-        HomePage homePage = new HomePage(driver);
-        ProductPage productPage = new ProductPage(driver);
+        HomePage homePage = new HomePage(getDriver());
+        ProductPage productPage = new ProductPage(getDriver());
         String username = "domat321535";
         String password = "password123";
         homePage.getMenu().clickLoginButton();
@@ -37,8 +37,8 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void addToCart() {
-        HomePage homePage = new HomePage(driver);
-        ProductPage productPage = new ProductPage(driver);
+        HomePage homePage = new HomePage(getDriver());
+        ProductPage productPage = new ProductPage(getDriver());
         String username = "domat321535";
         String password = "password123";
         homePage.getMenu().clickLoginButton();
@@ -52,9 +52,9 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void completePurchase() {
-        HomePage homePage = new HomePage(driver);
-        ProductPage productPage = new ProductPage(driver);
-        CartPage cartPage = new CartPage(driver);
+        HomePage homePage = new HomePage(getDriver());
+        ProductPage productPage = new ProductPage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
         String username = "domat321537";
         String password = "password123";
         homePage.getMenu().clickLoginButton();
@@ -78,7 +78,7 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void userLogoutVerification() {
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         String username = "domat321535";
         String password = "password123";
         homePage.getMenu().clickLoginButton();
@@ -92,7 +92,7 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void validNewUserRegistration() {
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         String uniqueUsername = "domat321535" + UUID.randomUUID().toString().substring(0, 8);
         String password = "password123";
         homePage.getMenu().clickSignUpButton();
@@ -104,9 +104,9 @@ public class WebTest extends AbstractWebTest {
 
     @Test
     public void addAndRemoveItemsFromCart() {
-        HomePage homePage = new HomePage(driver);
-        ProductPage productPage = new ProductPage(driver);
-        CartPage cartPage = new CartPage(driver);
+        HomePage homePage = new HomePage(getDriver());
+        ProductPage productPage = new ProductPage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
         String username = "domat321537";
         String password = "password123";
 
@@ -144,4 +144,3 @@ public class WebTest extends AbstractWebTest {
     }
 
 }
-
