@@ -1,17 +1,13 @@
-package pages;
+package com.solvd.pages;
 
+import com.solvd.components.MenuComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class ProductPage {
-    WebDriver driver;
-    WebDriverWait wait;
+public class ProductPage extends AbstractPage {
+    private MenuComponent menu;
 
     @FindBy(css = ".name")
     private WebElement productName;
@@ -53,9 +49,12 @@ public class ProductPage {
     private WebElement successMessage;
 
     public ProductPage(WebDriver driver) {
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
+        super(driver);
+        this.menu = new MenuComponent(driver);
+    }
+
+    public MenuComponent getMenu() {
+        return menu;
     }
 
     public boolean isProductDetailsDisplayed() {
@@ -64,17 +63,12 @@ public class ProductPage {
         wait.until(ExpectedConditions.visibilityOf(productDescription));
         wait.until(ExpectedConditions.visibilityOf(addToCartButton));
 
-        return productName.isDisplayed() &&
-                productPrice.isDisplayed() &&
-                productDescription.isDisplayed() &&
-                addToCartButton.isDisplayed();
+        return productName.isDisplayed() && productPrice.isDisplayed() && productDescription.isDisplayed() && addToCartButton.isDisplayed();
     }
 
     public void addToCart() {
         wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));
         addToCartButton.click();
-
-        // Wait for alert to be present
         wait.until(ExpectedConditions.alertIsPresent()).accept();
     }
 

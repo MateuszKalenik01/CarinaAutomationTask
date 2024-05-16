@@ -1,18 +1,18 @@
-package pages;
+package com.solvd.pages;
 
+import com.solvd.components.MenuComponent;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
 
-public class CartPage {
-    WebDriver driver;
-    WebDriverWait wait;
+public class CartPage extends AbstractPage {
+    private MenuComponent menu;
 
     @FindBy(css = "#tbodyid tr")
     private List<WebElement> cartItems;
@@ -51,19 +51,35 @@ public class CartPage {
     private WebElement confirmButton;
 
     public CartPage(WebDriver driver) {
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
+        super(driver);
+        this.menu = new MenuComponent(driver);
+    }
+
+    public MenuComponent getMenu() {
+        return menu;
+    }
+
+    public List<WebElement> getCartItems() {
+        cartItems = driver.findElements(By.cssSelector("#tbodyid tr"));
+        wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
+        return cartItems;
+    }
+
+    public void deleteCartItem(WebElement item) {
+        WebElement deleteButton = item.findElement(By.cssSelector("td a[onclick*='deleteItem']"));
+        wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
+        deleteButton.click();
+        wait.until(ExpectedConditions.stalenessOf(item));
     }
 
     public int getNumberOfCartItems() {
-        wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
-        return cartItems.size();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tbodyid tr")));
+        return getCartItems().size();
     }
 
-    public int getTotalPrice() {
+    public String  getTotalPrice() {
         wait.until(ExpectedConditions.visibilityOf(totalPrice));
-        return Integer.parseInt(totalPrice.getText());
+        return totalPrice.getText();
     }
 
     public void placeOrder() {
@@ -93,5 +109,13 @@ public class CartPage {
     public void closeSuccessAlert() {
         wait.until(ExpectedConditions.elementToBeClickable(confirmButton));
         confirmButton.click();
+    }
+
+    public void waitForCartToReload(int expectedNumberOfItems) {
+        if (expectedNumberOfItems == 0) {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#tbodyid tr")));
+        } else {
+            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr"), expectedNumberOfItems));
+        }
     }
 }
