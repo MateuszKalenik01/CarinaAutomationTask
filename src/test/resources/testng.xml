@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite" parallel="methods" thread-count="5">
-    <test name="Tests">
+    <test name="Test1">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="tests.WebTest"/>
+            <class name="com.solvd.tests.WebTest"/>
 
         </classes>
     </test>

@@ -1,13 +1,11 @@
 package com.solvd.pages;
 
-import com.solvd.components.MenuComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HomePage extends AbstractPage {
-    private MenuComponent menu;
 
     @FindBy(id = "loginusername")
     private WebElement usernameField;
@@ -32,11 +30,6 @@ public class HomePage extends AbstractPage {
 
     public HomePage(WebDriver driver) {
         super(driver);
-        this.menu = new MenuComponent(driver);
-    }
-
-    public MenuComponent getMenu() {
-        return menu;
     }
 
     public void enterUsername(String username) {

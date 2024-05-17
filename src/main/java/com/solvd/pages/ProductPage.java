@@ -1,13 +1,11 @@
 package com.solvd.pages;
 
-import com.solvd.components.MenuComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ProductPage extends AbstractPage {
-    private MenuComponent menu;
 
     @FindBy(css = ".name")
     private WebElement productName;
@@ -50,11 +48,6 @@ public class ProductPage extends AbstractPage {
 
     public ProductPage(WebDriver driver) {
         super(driver);
-        this.menu = new MenuComponent(driver);
-    }
-
-    public MenuComponent getMenu() {
-        return menu;
     }
 
     public boolean isProductDetailsDisplayed() {

@@ -1,6 +1,5 @@
 package com.solvd.pages;
 
-import com.solvd.components.MenuComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 
 public class CartPage extends AbstractPage {
-    private MenuComponent menu;
 
     @FindBy(css = "#tbodyid tr")
     private List<WebElement> cartItems;
@@ -49,11 +47,6 @@ public class CartPage extends AbstractPage {
 
     public CartPage(WebDriver driver) {
         super(driver);
-        this.menu = new MenuComponent(driver);
-    }
-
-    public MenuComponent getMenu() {
-        return menu;
     }
 
     public List<WebElement> getCartItems() {
@@ -74,7 +67,7 @@ public class CartPage extends AbstractPage {
         return getCartItems().size();
     }
 
-    public String  getTotalPrice() {
+    public String getTotalPrice() {
         wait.until(ExpectedConditions.visibilityOf(totalPrice));
         return totalPrice.getText();
     }

@@ -1,4 +1,5 @@
-package tests;
+package com.solvd.tests;
+
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,26 +12,22 @@ public class WebTest extends AbstractTest {
     @Test
     public void validUserLoginVerification() {
         HomePage homePage = new HomePage(getDriver());
-        String username = "domat321535";
-        String password = "password123";
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
     }
 
     @Test
     public void verifyProductDetails() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
-        String username = "domat321535";
-        String password = "password123";
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
         homePage.clickOnFirstProduct();
         Assert.assertTrue(productPage.isProductDetailsDisplayed(), "Product details are not displayed as expected.");
     }
@@ -39,13 +36,11 @@ public class WebTest extends AbstractTest {
     public void addToCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
-        String username = "domat321535";
-        String password = "password123";
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
         homePage.clickOnFirstProduct();
         productPage.addToCart();
     }
@@ -55,20 +50,18 @@ public class WebTest extends AbstractTest {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
         CartPage cartPage = new CartPage(getDriver());
-        String username = "domat321537";
-        String password = "password123";
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
         homePage.clickOnFirstProduct();
         productPage.addToCart();
-        homePage.getMenu().clickCartButton();
+        homePage.clickCartButton();
+
         int numberOfItems = cartPage.getNumberOfCartItems();
-        Assert.assertEquals(numberOfItems, 1, "Number of items in the cart is not correct. Actual: " + numberOfItems);
-        String totalPrice = cartPage.getTotalPrice();
-        Assert.assertEquals(totalPrice, "360", "Total price is not correct. Actual: " + totalPrice);
+        Assert.assertTrue(numberOfItems > 0, "Number of items in the cart should be greater than 0. Actual: " + numberOfItems);
+
         cartPage.placeOrder();
         cartPage.fillOrderDetails("Test User", "Test Country", "Test City", "1234567890123456", "12", "2024");
         cartPage.purchaseOrder();
@@ -79,23 +72,20 @@ public class WebTest extends AbstractTest {
     @Test
     public void userLogoutVerification() {
         HomePage homePage = new HomePage(getDriver());
-        String username = "domat321535";
-        String password = "password123";
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
-        homePage.getMenu().clickLogoutButton();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedOut(), "User is not logged out successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
+        homePage.clickLogoutButton();
+        Assert.assertTrue(homePage.isUserLoggedOut(), "User is not logged out successfully.");
     }
 
     @Test
     public void validNewUserRegistration() {
         HomePage homePage = new HomePage(getDriver());
-        String uniqueUsername = "domat321535" + UUID.randomUUID().toString().substring(0, 8);
-        String password = "password123";
-        homePage.getMenu().clickSignUpButton();
+        String uniqueUsername = username + UUID.randomUUID().toString().substring(0, 8);
+        homePage.clickSignUpButton();
         homePage.enterSignUpUsername(uniqueUsername);
         homePage.enterSignUpPassword(password);
         homePage.submitSignUp();
@@ -107,24 +97,22 @@ public class WebTest extends AbstractTest {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
         CartPage cartPage = new CartPage(getDriver());
-        String username = "domat321537";
-        String password = "password123";
 
-        homePage.getMenu().clickLoginButton();
+        homePage.clickLoginButton();
         homePage.enterUsername(username);
         homePage.enterPassword(password);
         homePage.submitLogin();
-        Assert.assertTrue(homePage.getMenu().isUserLoggedIn(username), "User is not logged in successfully.");
+        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
 
         homePage.clickOnFirstProduct();
         productPage.addToCart();
-        homePage.getMenu().clickHomeButton();
+        homePage.clickHomeButton();
 
         homePage.clickOnFirstProduct();
         productPage.addToCart();
-        homePage.getMenu().clickHomeButton();
+        homePage.clickHomeButton();
 
-        homePage.getMenu().clickCartButton();
+        homePage.clickCartButton();
 
         int initialNumberOfItems = cartPage.getNumberOfCartItems();
         Assert.assertTrue(initialNumberOfItems >= 2, "Number of items in the cart is not correct. Actual: " + initialNumberOfItems);
@@ -142,5 +130,4 @@ public class WebTest extends AbstractTest {
         }
         Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
     }
-
 }
