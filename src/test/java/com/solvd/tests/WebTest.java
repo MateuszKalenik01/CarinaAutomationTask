@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class WebTest extends AbstractTest {
 
-    @Test
+    @Test(testName="TC003")
     public void validUserLoginVerification() {
         HomePage homePage = new HomePage(getDriver());
         homePage.clickLoginButton();
@@ -19,7 +19,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
     }
 
-    @Test
+    @Test(testName = "TC001")
     public void verifyProductDetails() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -32,7 +32,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(productPage.isProductDetailsDisplayed(), "Product details are not displayed as expected.");
     }
 
-    @Test
+    @Test(testName = "TC002")
     public void addToCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -45,7 +45,7 @@ public class WebTest extends AbstractTest {
         productPage.addToCart();
     }
 
-    @Test
+    @Test(testName = "TC004")
     public void completePurchase() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -69,7 +69,7 @@ public class WebTest extends AbstractTest {
         cartPage.closeSuccessAlert();
     }
 
-    @Test
+    @Test(testName = "TC005")
     public void userLogoutVerification() {
         HomePage homePage = new HomePage(getDriver());
         homePage.clickLoginButton();
@@ -81,7 +81,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isUserLoggedOut(), "User is not logged out successfully.");
     }
 
-    @Test
+    @Test(testName = "TCOO6")
     public void validNewUserRegistration() {
         HomePage homePage = new HomePage(getDriver());
         String uniqueUsername = username + UUID.randomUUID().toString().substring(0, 8);
@@ -92,7 +92,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isSignUpSuccessful(), "Sign up was not successful.");
     }
 
-    @Test
+    @Test(testName = "TC007")
     public void addAndRemoveItemsFromCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());

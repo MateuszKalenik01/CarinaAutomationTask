@@ -24,27 +24,27 @@ public abstract class AbstractPage {
 
     protected void click(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
-        LOGGER.info("Clicking on element: {}", element);
+        LOGGER.info("Clicking on element: {}", element.toString());
         element.click();
     }
 
     protected void sendKeys(WebElement element, String text) {
         wait.until(ExpectedConditions.visibilityOf(element));
-        LOGGER.info("Sending keys to element: {} with text: {}", element, text);
+        LOGGER.info("Sending keys to element: {} with text: {}", element.toString(), text);
         element.sendKeys(text);
     }
 
     protected String getText(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
         String text = element.getText();
-        LOGGER.info("Getting text from element: {}. Text: {}", element, text);
+        LOGGER.info("Getting text from element: {}. Text: {}", element.toString(), text);
         return text;
     }
 
     protected boolean isDisplayed(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
         boolean displayed = element.isDisplayed();
-        LOGGER.info("Element: {} is displayed: {}", element, displayed);
+        LOGGER.info("Element: {} is displayed: {}", element.toString(), displayed);
         return displayed;
     }
 
