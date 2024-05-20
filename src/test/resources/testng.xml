@@ -7,4 +7,11 @@
 
         </classes>
     </test>
+    <test name="Test2">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.solvd.tests.WebTest"/>
+
+        </classes>
+    </test>
 </suite>

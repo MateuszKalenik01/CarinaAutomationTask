@@ -65,6 +65,11 @@ public class ProductPage extends AbstractPage {
         wait.until(ExpectedConditions.alertIsPresent()).accept();
     }
 
+    public String getProductName() {
+        wait.until(ExpectedConditions.visibilityOf(productName));
+        return productName.getText();
+    }
+
     public void placeOrder() {
         wait.until(ExpectedConditions.elementToBeClickable(placeOrderButton));
         placeOrderButton.click();

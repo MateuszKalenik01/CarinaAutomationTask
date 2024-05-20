@@ -47,7 +47,14 @@ public abstract class AbstractPage {
         LOGGER.info("Element: {} is displayed: {}", element.toString(), displayed);
         return displayed;
     }
+    @FindBy(id = "loginusername")
+    private WebElement usernameField;
 
+    @FindBy(id = "loginpassword")
+    private WebElement passwordField;
+
+    @FindBy(css = "button[onclick='logIn()']")
+    private WebElement loginSubmitButton;
 
     @FindBy(id = "login2")
     private WebElement loginButton;
@@ -88,6 +95,17 @@ public abstract class AbstractPage {
     public void clickCartButton() {
         click(cartButton);
     }
+    public void enterUsername(String username) {
+        sendKeys(usernameField, username);
+    }
+
+    public void enterPassword(String password) {
+        sendKeys(passwordField, password);
+    }
+
+    public void submitLogin() {
+        click(loginSubmitButton);
+    }
 
     public void clickHomeButton() {
         click(homeButton);
@@ -110,5 +128,11 @@ public abstract class AbstractPage {
         wait.until(ExpectedConditions.visibilityOf(loginButton));
         wait.until(ExpectedConditions.visibilityOf(signUpButton));
         return isDisplayed(loginButton) && isDisplayed(signUpButton);
+    }
+    public void logIn(String username, String password) {
+        click(loginButton);
+        sendKeys(usernameField, username);
+        sendKeys(passwordField, password);
+        click(loginSubmitButton);
     }
 }

@@ -5,11 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.List;
 
 public class CartPage extends AbstractPage {
 
-    @FindBy(css = "#tbodyid tr")
+    @FindBy(css = "#tbodyid tr.success")
     private List<WebElement> cartItems;
 
     @FindBy(id = "totalp")
@@ -45,25 +48,33 @@ public class CartPage extends AbstractPage {
     @FindBy(css = ".sweet-alert .sa-confirm-button-container .confirm")
     private WebElement confirmButton;
 
+    @FindBy(css = "td:nth-child(2)")
+    private List<WebElement> itemNames;
+
+    @FindBy(css = "td a[onclick*='deleteItem']")
+    private List<WebElement> deleteButtons;
+
+    private WebDriverWait wait;
+
     public CartPage(WebDriver driver) {
         super(driver);
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public List<WebElement> getCartItems() {
-        cartItems = driver.findElements(By.cssSelector("#tbodyid tr"));
         wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
         return cartItems;
     }
 
     public void deleteCartItem(WebElement item) {
-        WebElement deleteButton = item.findElement(By.cssSelector("td a[onclick*='deleteItem']"));
+        int index = cartItems.indexOf(item);
+        WebElement deleteButton = deleteButtons.get(index);
         wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
         deleteButton.click();
         wait.until(ExpectedConditions.stalenessOf(item));
     }
 
     public int getNumberOfCartItems() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tbodyid tr")));
         return getCartItems().size();
     }
 
@@ -103,9 +114,20 @@ public class CartPage extends AbstractPage {
 
     public void waitForCartToReload(int expectedNumberOfItems) {
         if (expectedNumberOfItems == 0) {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#tbodyid tr")));
+            wait.until(ExpectedConditions.invisibilityOfAllElements(cartItems));
         } else {
-            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr"), expectedNumberOfItems));
+            wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
+            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr.success"), expectedNumberOfItems));
         }
+    }
+    public boolean isItemInCart(String productName) {
+        List<WebElement> items = getCartItems();
+        for (WebElement item : items) {
+            String itemName = item.findElement(By.cssSelector("td:nth-child(2)")).getText();
+            if (itemName.equals(productName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

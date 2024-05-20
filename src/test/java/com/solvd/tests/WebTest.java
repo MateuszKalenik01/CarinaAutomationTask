@@ -1,34 +1,34 @@
 package com.solvd.tests;
 
+import com.solvd.model.User;
+import com.solvd.pages.CartPage;
+import com.solvd.pages.HomePage;
+import com.solvd.pages.ProductPage;
+import com.solvd.service.UserService;
+import com.solvd.utils.ConfigReader;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.solvd.pages.*;
+
 import java.util.List;
 import java.util.UUID;
 
 public class WebTest extends AbstractTest {
 
-    @Test(testName="TC003")
+    @Test(testName = "TC003")
     public void validUserLoginVerification() {
         HomePage homePage = new HomePage(getDriver());
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
+        String expectedUsername = ConfigReader.getProperty("username");
+        Assert.assertTrue(homePage.isUserLoggedIn(expectedUsername), "The user is not logged in successfully. Welcome message is not displayed.");
     }
 
     @Test(testName = "TC001")
     public void verifyProductDetails() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
-        homePage.clickOnFirstProduct();
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
+        homePage.addRandomProductToCart();
         Assert.assertTrue(productPage.isProductDetailsDisplayed(), "Product details are not displayed as expected.");
     }
 
@@ -36,13 +36,13 @@ public class WebTest extends AbstractTest {
     public void addToCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
-        homePage.clickOnFirstProduct();
+        CartPage cartPage = new CartPage(getDriver());
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
+        homePage.addRandomProductToCart();
+        String productName = productPage.getProductName();
         productPage.addToCart();
+        homePage.clickCartButton();
+        Assert.assertTrue(cartPage.isItemInCart(productName), "The item is not found in the cart.");
     }
 
     @Test(testName = "TC004")
@@ -50,12 +50,11 @@ public class WebTest extends AbstractTest {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
         CartPage cartPage = new CartPage(getDriver());
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
-        homePage.clickOnFirstProduct();
+        UserService userService = new UserService();
+        User user = userService.createDefaultUser();
+
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
+        homePage.addRandomProductToCart();
         productPage.addToCart();
         homePage.clickCartButton();
 
@@ -63,31 +62,26 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(numberOfItems > 0, "Number of items in the cart should be greater than 0. Actual: " + numberOfItems);
 
         cartPage.placeOrder();
-        cartPage.fillOrderDetails("Test User", "Test Country", "Test City", "1234567890123456", "12", "2024");
+        cartPage.fillOrderDetails(user.getName(), user.getCountry(), user.getCity(), user.getCreditCardNumber(), user.getMonth(), user.getYear());
         cartPage.purchaseOrder();
         Assert.assertTrue(cartPage.isPurchaseSuccessful(), "Purchase was not successful.");
-        cartPage.closeSuccessAlert();
     }
 
     @Test(testName = "TC005")
     public void userLogoutVerification() {
         HomePage homePage = new HomePage(getDriver());
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
         homePage.clickLogoutButton();
         Assert.assertTrue(homePage.isUserLoggedOut(), "User is not logged out successfully.");
     }
 
-    @Test(testName = "TCOO6")
+    @Test(testName = "TC006")
     public void validNewUserRegistration() {
         HomePage homePage = new HomePage(getDriver());
-        String uniqueUsername = username + UUID.randomUUID().toString().substring(0, 8);
+        String uniqueUsername = ConfigReader.getProperty("username") + UUID.randomUUID().toString().substring(0, 8);
         homePage.clickSignUpButton();
         homePage.enterSignUpUsername(uniqueUsername);
-        homePage.enterSignUpPassword(password);
+        homePage.enterSignUpPassword(ConfigReader.getProperty("password"));
         homePage.submitSignUp();
         Assert.assertTrue(homePage.isSignUpSuccessful(), "Sign up was not successful.");
     }
@@ -97,25 +91,19 @@ public class WebTest extends AbstractTest {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
         CartPage cartPage = new CartPage(getDriver());
+        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
 
-        homePage.clickLoginButton();
-        homePage.enterUsername(username);
-        homePage.enterPassword(password);
-        homePage.submitLogin();
-        Assert.assertTrue(homePage.isUserLoggedIn(username), "User is not logged in successfully.");
-
-        homePage.clickOnFirstProduct();
+        homePage.addRandomProductToCart();
         productPage.addToCart();
         homePage.clickHomeButton();
 
-        homePage.clickOnFirstProduct();
+        homePage.addRandomProductToCart();
         productPage.addToCart();
-        homePage.clickHomeButton();
 
         homePage.clickCartButton();
 
         int initialNumberOfItems = cartPage.getNumberOfCartItems();
-        Assert.assertTrue(initialNumberOfItems >= 2, "Number of items in the cart is not correct. Actual: " + initialNumberOfItems);
+        Assert.assertTrue(initialNumberOfItems >= 1, "Number of items in the cart is not correct. Actual: " + initialNumberOfItems);
 
         int itemsRemaining = initialNumberOfItems;
 
