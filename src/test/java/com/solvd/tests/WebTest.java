@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class WebTest extends AbstractTest {
 
-    @Test(testName = "TC003")
+    @Test(testName = "TC003", threadPoolSize = 2,  invocationCount = 2)
     public void validUserLoginVerification() {
         HomePage homePage = new HomePage(getDriver());
         homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
@@ -23,7 +23,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isUserLoggedIn(expectedUsername), "The user is not logged in successfully. Welcome message is not displayed.");
     }
 
-    @Test(testName = "TC001")
+    @Test(testName = "TC001", threadPoolSize = 2,  invocationCount = 2)
     public void verifyProductDetails() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -32,7 +32,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(productPage.isProductDetailsDisplayed(), "Product details are not displayed as expected.");
     }
 
-    @Test(testName = "TC002")
+    @Test(testName = "TC002", threadPoolSize = 2 ,  invocationCount = 2)
     public void addToCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -45,7 +45,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(cartPage.isItemInCart(productName), "The item is not found in the cart.");
     }
 
-    @Test(testName = "TC004")
+    @Test(testName = "TC004", threadPoolSize = 2,  invocationCount = 2)
     public void completePurchase() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
@@ -67,7 +67,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(cartPage.isPurchaseSuccessful(), "Purchase was not successful.");
     }
 
-    @Test(testName = "TC005")
+    @Test(testName = "TC005", threadPoolSize = 2,  invocationCount = 2)
     public void userLogoutVerification() {
         HomePage homePage = new HomePage(getDriver());
         homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
@@ -75,7 +75,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isUserLoggedOut(), "User is not logged out successfully.");
     }
 
-    @Test(testName = "TC006")
+    @Test(testName = "TC006", threadPoolSize = 2,  invocationCount = 2)
     public void validNewUserRegistration() {
         HomePage homePage = new HomePage(getDriver());
         String uniqueUsername = ConfigReader.getProperty("username") + UUID.randomUUID().toString().substring(0, 8);
@@ -86,7 +86,7 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isSignUpSuccessful(), "Sign up was not successful.");
     }
 
-    @Test(testName = "TC007")
+    @Test(testName = "TC007" , threadPoolSize = 2,  invocationCount = 2)
     public void addAndRemoveItemsFromCart() {
         HomePage homePage = new HomePage(getDriver());
         ProductPage productPage = new ProductPage(getDriver());
