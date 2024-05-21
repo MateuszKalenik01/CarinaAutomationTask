@@ -69,28 +69,4 @@ public class ProductPage extends AbstractPage {
         wait.until(ExpectedConditions.visibilityOf(productName));
         return productName.getText();
     }
-
-    public void placeOrder() {
-        wait.until(ExpectedConditions.elementToBeClickable(placeOrderButton));
-        placeOrderButton.click();
-    }
-
-    public void fillOrderDetails(String name, String country, String city, String card, String month, String year) {
-        wait.until(ExpectedConditions.visibilityOf(nameField)).sendKeys(name);
-        countryField.sendKeys(country);
-        cityField.sendKeys(city);
-        cardField.sendKeys(card);
-        monthField.sendKeys(month);
-        yearField.sendKeys(year);
-    }
-
-    public void purchaseOrder() {
-        wait.until(ExpectedConditions.elementToBeClickable(purchaseButton));
-        purchaseButton.click();
-    }
-
-    public boolean isPurchaseSuccessful() {
-        wait.until(ExpectedConditions.visibilityOf(successMessage));
-        return successMessage.isDisplayed();
-    }
 }

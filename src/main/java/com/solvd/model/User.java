@@ -15,23 +15,3 @@ public class User {
     private String month;
     private String year;
 }
-
-/*
-* public void addToCartByNameAndContinue(String name) {
-    LOGGER.info("addToCartByProductName(" + name + ")");
-
-    Actions actions = new Actions(getDriver());
-
-    IntStream.range(0, products.size())
-            .filter(i -> products.get(i).getText().contains(name))
-            .forEach(i -> {
-                WebElement product = products.get(i);
-                LOGGER.info("Found product: " + product.getText());
-                actions.moveToElement(product).perform();
-                WebElement addToCartButton = addToCartButtons.get(i);
-                click(addToCartButton);
-                click(continueShoppingButton);
-            });
-}
-*
-* */
