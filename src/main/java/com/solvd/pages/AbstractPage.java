@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.List;
 
 public abstract class AbstractPage {
     protected WebDriver driver;
@@ -119,6 +120,9 @@ public abstract class AbstractPage {
         click(aboutUsButton);
     }
 
+    protected void loadWebElementList(List<WebElement> webElementList) {
+        wait.until(ExpectedConditions.visibilityOfAllElements(webElementList));
+    }
     public boolean isUserLoggedIn(String username) {
         wait.until(ExpectedConditions.visibilityOf(welcomeMessage));
         return getText(welcomeMessage).contains("Welcome " + username);

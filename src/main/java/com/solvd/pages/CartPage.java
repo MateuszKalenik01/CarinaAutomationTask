@@ -111,23 +111,34 @@ public class CartPage extends AbstractPage {
         wait.until(ExpectedConditions.elementToBeClickable(confirmButton));
         confirmButton.click();
     }
+    public List<WebElement> getItemNamesList() {
+        loadWebElementList(itemNames);
+        return itemNames;
+    }
+    public List<WebElement> getCartItemsList() {
+        loadWebElementList(cartItems);
+        return cartItems;
+    }
 
     public void waitForCartToReload(int expectedNumberOfItems) {
         if (expectedNumberOfItems == 0) {
             wait.until(ExpectedConditions.invisibilityOfAllElements(cartItems));
         } else {
-            wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
-            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr.success"), expectedNumberOfItems));
+            wait.until(driver -> {
+                List<WebElement> items = getCartItemsList();
+                return items.size() == expectedNumberOfItems && items.stream().allMatch(WebElement::isDisplayed);
+            });
         }
     }
     public boolean isItemInCart(String productName) {
-        List<WebElement> items = getCartItems();
-        for (WebElement item : items) {
-            String itemName = item.findElement(By.cssSelector("td:nth-child(2)")).getText();
+        List<WebElement> itemNamesList = getItemNamesList();
+        for (WebElement itemNameElement : itemNamesList) {
+            String itemName = itemNameElement.getText();
             if (itemName.equals(productName)) {
                 return true;
             }
         }
         return false;
     }
+
 }

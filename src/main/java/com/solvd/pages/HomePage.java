@@ -72,16 +72,17 @@ public class HomePage extends AbstractPage {
 
         }
     }
-
+    public List<WebElement> getProductList() {
+        loadWebElementList(productList);
+        return productList;
+    }
     public void addRandomProductToCart() {
         Random rand = new Random();
         int attempts = 0;
         while (attempts < 3) {
             try {
 
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("#tbodyid .card .card-title a")));
-
-                productList = driver.findElements(By.cssSelector("#tbodyid .card .card-title a"));
+                List<WebElement> productList = getProductList();
                 if (productList.isEmpty()) {
                     throw new IllegalStateException("Product list is empty, cannot add random product to cart.");
                 }
