@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CartPage extends AbstractPage {
 
-    @FindBy(css = "#tbodyid tr.success")
+    @FindBy(css = "#tbodyid tr")
     private List<WebElement> cartItems;
 
     @FindBy(id = "totalp")
@@ -62,7 +62,11 @@ public class CartPage extends AbstractPage {
     }
 
     public List<WebElement> getCartItems() {
-        wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
+        try {
+            wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
+        } catch (Exception e) {
+            return List.of();
+        }
         return cartItems;
     }
 
@@ -120,25 +124,28 @@ public class CartPage extends AbstractPage {
         return cartItems;
     }
 
+
     public void waitForCartToReload(int expectedNumberOfItems) {
         if (expectedNumberOfItems == 0) {
-            wait.until(ExpectedConditions.invisibilityOfAllElements(cartItems));
+            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr"), expectedNumberOfItems));
         } else {
-            wait.until(driver -> {
-                List<WebElement> items = getCartItemsList();
-                return items.size() == expectedNumberOfItems && items.stream().allMatch(WebElement::isDisplayed);
-            });
+            wait.until(driver -> getCartItemsList().size() == expectedNumberOfItems);
         }
     }
     public boolean isItemInCart(String productName) {
-        List<WebElement> itemNamesList = getItemNamesList();
-        for (WebElement itemNameElement : itemNamesList) {
-            String itemName = itemNameElement.getText();
-            if (itemName.equals(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return getItemNamesList().stream()
+                .map(WebElement::getText)
+                .anyMatch(itemName -> itemName.equals(productName));
     }
-
+    public void removeAllItemsFromCart() {
+        while (true) {
+            List<WebElement> items = getCartItems();
+            if (items.isEmpty()) {
+                break;
+            }
+            WebElement item = items.get(0);
+            deleteCartItem(item);
+            waitForCartToReload(getCartItems().size());
+        }
+    }
 }

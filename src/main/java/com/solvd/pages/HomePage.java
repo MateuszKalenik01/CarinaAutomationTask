@@ -1,12 +1,12 @@
 package com.solvd.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import javax.swing.text.html.CSS;
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +33,8 @@ public class HomePage extends AbstractPage {
     }
     @FindBy(css = "div.modal.show")
     private WebElement modal;
-
+    @FindBy(css=".card-title a")
+    private WebElement productName;
     @FindBy(css = "button[data-dismiss='modal']")
     private WebElement modalCloseButton;
     public void enterSignUpUsername(String username) {
@@ -73,31 +74,39 @@ public class HomePage extends AbstractPage {
         }
     }
     public List<WebElement> getProductList() {
-        loadWebElementList(productList);
+        wait.until(ExpectedConditions.visibilityOfAllElements(productList));
         return productList;
     }
-    public void addRandomProductToCart() {
+    public String getProductName() {
+        wait.until(ExpectedConditions.visibilityOf(productName));
+        return productName.getText();
+    }
+    public WebElement getRandomProduct() {
         Random rand = new Random();
+        List<WebElement> productList = getProductList();
+        if (productList.isEmpty()) {
+            throw new IllegalStateException("Product list is empty, cannot select a random product.");
+        }
+        int randomIndex = rand.nextInt(productList.size());
+        return productList.get(randomIndex);
+    }
+
+    public void showProductDetails() {
         int attempts = 0;
         while (attempts < 3) {
             try {
-
-                List<WebElement> productList = getProductList();
-                if (productList.isEmpty()) {
-                    throw new IllegalStateException("Product list is empty, cannot add random product to cart.");
-                }
-                int randomIndex = rand.nextInt(productList.size());
-                WebElement randomProduct = productList.get(randomIndex);
+                WebElement product = getRandomProduct();
                 closeModalIfPresent();
-                randomProduct.click();
-                break;
+                product.click();
+                return;
             } catch (StaleElementReferenceException e) {
                 attempts++;
                 if (attempts == 3) {
-                    throw e;
+                    throw new IllegalStateException("Failed to add product to cart after multiple attempts.", e);
                 }
             }
         }
-    }
 
+
+    }
 }
