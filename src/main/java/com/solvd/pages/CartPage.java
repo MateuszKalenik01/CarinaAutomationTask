@@ -126,12 +126,11 @@ public class CartPage extends AbstractPage {
 
 
     public void waitForCartToReload(int expectedNumberOfItems) {
-        if (expectedNumberOfItems == 0) {
-            wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("#tbodyid tr"), expectedNumberOfItems));
-        } else {
-            wait.until(driver -> getCartItemsList().size() == expectedNumberOfItems);
+        if (expectedNumberOfItems > 0) {
+            wait.until(driver -> getCartItems().size() == expectedNumberOfItems);
         }
     }
+
     public boolean isItemInCart(String productName) {
         return getItemNamesList().stream()
                 .map(WebElement::getText)
@@ -145,7 +144,9 @@ public class CartPage extends AbstractPage {
             }
             WebElement item = items.get(0);
             deleteCartItem(item);
-            waitForCartToReload(getCartItems().size());
+            if (!getCartItems().isEmpty()) {
+                waitForCartToReload(getCartItems().size());
+            }
         }
     }
 }

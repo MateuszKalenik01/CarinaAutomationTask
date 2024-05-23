@@ -55,6 +55,31 @@ public class WebTest extends AbstractTest {
         cartPage.purchaseOrder();
         Assert.assertTrue(cartPage.isPurchaseSuccessful(), "Purchase was not successful.");
     }
+    @Test(testName = "TC006", threadPoolSize = 1,  invocationCount = 1)
+    public void addAndRemoveItemsFromCart() {
+        HomePage homePage = new HomePage(getDriver());
+        ProductPage productPage = new ProductPage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
+
+
+        homePage.showProductDetails();
+        productPage.addToCart();
+        homePage.clickHomeButton();
+
+        homePage.showProductDetails();
+        productPage.addToCart();
+        homePage.clickHomeButton();
+
+        homePage.clickCartButton();
+
+        int initialNumberOfItems = cartPage.getNumberOfCartItems();
+        Assert.assertTrue(initialNumberOfItems != 0, "Items have not been added correctly. Actual: " + initialNumberOfItems);
+
+        cartPage.removeAllItemsFromCart();
+
+        int itemsRemaining = cartPage.getNumberOfCartItems();
+        Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
+    }
 
     @Test(testName = "TC004", threadPoolSize = 1,  invocationCount = 1)
     public void userLogoutVerification() {
@@ -75,31 +100,5 @@ public class WebTest extends AbstractTest {
         Assert.assertTrue(homePage.isSignUpSuccessful(), "Sign up was not successful.");
     }
 
-    @Test(testName = "TC006", threadPoolSize = 1,  invocationCount = 1)
 
-    public void addAndRemoveItemsFromCart() {
-        HomePage homePage = new HomePage(getDriver());
-        ProductPage productPage = new ProductPage(getDriver());
-        CartPage cartPage = new CartPage(getDriver());
-
-        homePage.logIn(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
-
-        homePage.showProductDetails();
-        productPage.addToCart();
-        homePage.clickHomeButton();
-
-        homePage.showProductDetails();
-        productPage.addToCart();
-        homePage.clickHomeButton();
-
-        homePage.clickCartButton();
-
-        int initialNumberOfItems = cartPage.getNumberOfCartItems();
-        Assert.assertTrue(initialNumberOfItems != 0, "Items have not been added correctly. Actual: " + initialNumberOfItems);
-
-        cartPage.removeAllItemsFromCart();
-
-        int itemsRemaining = cartPage.getNumberOfCartItems();
-        Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
-    }
 }
