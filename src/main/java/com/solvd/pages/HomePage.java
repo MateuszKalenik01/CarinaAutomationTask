@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import javax.swing.text.html.CSS;
 import java.util.List;
 import java.util.Random;
 
@@ -33,8 +32,7 @@ public class HomePage extends AbstractPage {
     }
     @FindBy(css = "div.modal.show")
     private WebElement modal;
-    @FindBy(css=".card-title a")
-    private WebElement productName;
+
     @FindBy(css = "button[data-dismiss='modal']")
     private WebElement modalCloseButton;
     public void enterSignUpUsername(String username) {
@@ -76,10 +74,6 @@ public class HomePage extends AbstractPage {
     public List<WebElement> getProductList() {
         wait.until(ExpectedConditions.visibilityOfAllElements(productList));
         return productList;
-    }
-    public String getProductName() {
-        wait.until(ExpectedConditions.visibilityOf(productName));
-        return productName.getText();
     }
     public WebElement getRandomProduct() {
         Random rand = new Random();
