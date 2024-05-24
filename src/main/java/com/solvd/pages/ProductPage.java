@@ -1,5 +1,7 @@
 package com.solvd.pages;
 
+import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,65 +10,57 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class ProductPage extends AbstractPage {
 
     @FindBy(css = ".name")
-    private WebElement productName;
+    private ExtendedWebElement productName;
 
     @FindBy(css = ".price-container")
-    private WebElement productPrice;
+    private ExtendedWebElement productPrice;
 
     @FindBy(css = ".description .tab-pane p")
-    private WebElement productDescription;
+    private ExtendedWebElement productDescription;
 
     @FindBy(css = ".btn-success")
-    private WebElement addToCartButton;
+    private ExtendedWebElement addToCartButton;
 
     @FindBy(css = ".btn-primary[data-target='#orderModal']")
-    private WebElement placeOrderButton;
+    private ExtendedWebElement placeOrderButton;
 
     @FindBy(id = "name")
-    private WebElement nameField;
+    private ExtendedWebElement nameField;
 
     @FindBy(id = "country")
-    private WebElement countryField;
+    private ExtendedWebElement countryField;
 
     @FindBy(id = "city")
-    private WebElement cityField;
+    private ExtendedWebElement cityField;
 
     @FindBy(id = "card")
-    private WebElement cardField;
+    private ExtendedWebElement cardField;
 
     @FindBy(id = "month")
-    private WebElement monthField;
+    private ExtendedWebElement monthField;
 
     @FindBy(id = "year")
-    private WebElement yearField;
+    private ExtendedWebElement yearField;
 
     @FindBy(css = "button[onclick='purchaseOrder()']")
-    private WebElement purchaseButton;
+    private ExtendedWebElement purchaseButton;
 
     @FindBy(css = ".sweet-alert .sa-success")
-    private WebElement successMessage;
+    private ExtendedWebElement successMessage;
 
     public ProductPage(WebDriver driver) {
         super(driver);
     }
 
     public boolean isProductDetailsDisplayed() {
-        wait.until(ExpectedConditions.visibilityOf(productName));
-        wait.until(ExpectedConditions.visibilityOf(productPrice));
-        wait.until(ExpectedConditions.visibilityOf(productDescription));
-        wait.until(ExpectedConditions.visibilityOf(addToCartButton));
-
         return productName.isDisplayed() && productPrice.isDisplayed() && productDescription.isDisplayed() && addToCartButton.isDisplayed();
     }
 
     public void addToCart() {
-        wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));
         addToCartButton.click();
-        wait.until(ExpectedConditions.alertIsPresent()).accept();
     }
 
     public String getProductName() {
-        wait.until(ExpectedConditions.visibilityOf(productName));
         return productName.getText();
     }
 }

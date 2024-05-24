@@ -1,81 +1,69 @@
 package com.solvd.pages;
 
-import org.openqa.selenium.By;
+import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 import java.util.List;
 
 public class CartPage extends AbstractPage {
 
     @FindBy(css = "#tbodyid tr")
-    private List<WebElement> cartItems;
+    private List<ExtendedWebElement> cartItems;
 
     @FindBy(id = "totalp")
-    private WebElement totalPrice;
+    private ExtendedWebElement totalPrice;
 
     @FindBy(css = ".btn.btn-success[data-target='#orderModal']")
-    private WebElement placeOrderButton;
+    private ExtendedWebElement placeOrderButton;
 
     @FindBy(id = "name")
-    private WebElement nameField;
+    private ExtendedWebElement nameField;
 
     @FindBy(id = "country")
-    private WebElement countryField;
+    private ExtendedWebElement countryField;
 
     @FindBy(id = "city")
-    private WebElement cityField;
+    private ExtendedWebElement cityField;
 
     @FindBy(id = "card")
-    private WebElement cardField;
+    private ExtendedWebElement cardField;
 
     @FindBy(id = "month")
-    private WebElement monthField;
+    private ExtendedWebElement monthField;
 
     @FindBy(id = "year")
-    private WebElement yearField;
+    private ExtendedWebElement yearField;
 
     @FindBy(css = "button[onclick='purchaseOrder()']")
-    private WebElement purchaseButton;
+    private ExtendedWebElement purchaseButton;
 
     @FindBy(css = ".sweet-alert .sa-success")
-    private WebElement successMessage;
+    private ExtendedWebElement successMessage;
 
     @FindBy(css = ".sweet-alert .sa-confirm-button-container .confirm")
-    private WebElement confirmButton;
+    private ExtendedWebElement confirmButton;
 
     @FindBy(css = "td:nth-child(2)")
-    private List<WebElement> itemNames;
+    private List<ExtendedWebElement> itemNames;
 
     @FindBy(css = "td a[onclick*='deleteItem']")
-    private List<WebElement> deleteButtons;
-
-    private WebDriverWait wait;
+    private List<ExtendedWebElement> deleteButtons;
 
     public CartPage(WebDriver driver) {
         super(driver);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        setPageURL("path/to/cart/page"); // Set the URL to the cart page
     }
 
-    public List<WebElement> getCartItems() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfAllElements(cartItems));
-        } catch (Exception e) {
-            return List.of();
-        }
+    public List<ExtendedWebElement> getCartItems() {
         return cartItems;
     }
 
     public void deleteCartItem(WebElement item) {
         int index = cartItems.indexOf(item);
         WebElement deleteButton = deleteButtons.get(index);
-        wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
         deleteButton.click();
-        wait.until(ExpectedConditions.stalenessOf(item));
     }
 
     public int getNumberOfCartItems() {
@@ -83,51 +71,41 @@ public class CartPage extends AbstractPage {
     }
 
     public String getTotalPrice() {
-        wait.until(ExpectedConditions.visibilityOf(totalPrice));
         return totalPrice.getText();
     }
 
     public void placeOrder() {
-        wait.until(ExpectedConditions.elementToBeClickable(placeOrderButton));
         placeOrderButton.click();
     }
 
     public void fillOrderDetails(String name, String country, String city, String card, String month, String year) {
-        wait.until(ExpectedConditions.visibilityOf(nameField)).sendKeys(name);
-        countryField.sendKeys(country);
-        cityField.sendKeys(city);
-        cardField.sendKeys(card);
-        monthField.sendKeys(month);
-        yearField.sendKeys(year);
+        nameField.type(name);
+        countryField.type(country);
+        cityField.type(city);
+        cardField.type(card);
+        monthField.type(month);
+        yearField.type(year);
     }
 
     public void purchaseOrder() {
-        wait.until(ExpectedConditions.elementToBeClickable(purchaseButton));
         purchaseButton.click();
     }
 
     public boolean isPurchaseSuccessful() {
-        wait.until(ExpectedConditions.visibilityOf(successMessage));
-        return successMessage.isDisplayed();
+        return successMessage.isElementPresent();
     }
 
     public void closeSuccessAlert() {
-        wait.until(ExpectedConditions.elementToBeClickable(confirmButton));
         confirmButton.click();
     }
-    public List<WebElement> getItemNamesList() {
-        loadWebElementList(itemNames);
+
+    public List<ExtendedWebElement> getItemNamesList() {
         return itemNames;
     }
-    public List<WebElement> getCartItemsList() {
-        loadWebElementList(cartItems);
-        return cartItems;
-    }
-
 
     public void waitForCartToReload(int expectedNumberOfItems) {
         if (expectedNumberOfItems > 0) {
-            wait.until(driver -> getCartItems().size() == expectedNumberOfItems);
+            waitUntil(driver -> getCartItems().size() == expectedNumberOfItems, 10);
         }
     }
 
@@ -136,13 +114,10 @@ public class CartPage extends AbstractPage {
                 .map(WebElement::getText)
                 .anyMatch(itemName -> itemName.equals(productName));
     }
+
     public void removeAllItemsFromCart() {
-        while (true) {
-            List<WebElement> items = getCartItems();
-            if (items.isEmpty()) {
-                break;
-            }
-            WebElement item = items.get(0);
+        while (!getCartItems().isEmpty()) {
+            WebElement item = getCartItems().get(0);
             deleteCartItem(item);
             if (!getCartItems().isEmpty()) {
                 waitForCartToReload(getCartItems().size());
@@ -150,3 +125,16 @@ public class CartPage extends AbstractPage {
         }
     }
 }
+//$ mvn test -DsuiteXmlFile=testng.xml
+
+/*@BeforeTest
+    @Override
+    public WebDriver getDriver() {
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setCapability("platformName", "ANDROID");
+        dc.setCapability("appium:automationName", "UiAutomator2");
+        dc.setCapability("appium:deviceName", "Pixel_3");
+        dc.setCapability("appium:deviceType", "phone");
+        dc.setCapability("appium:udid", "emulator-5554");
+        dc.setCapability("browserName", "chrome");
+        dc.setCapability("chromedri*/
