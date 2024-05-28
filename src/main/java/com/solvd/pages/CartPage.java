@@ -2,13 +2,18 @@ package com.solvd.pages;
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.List;
 
 public class CartPage extends AbstractPage {
 
+    @Getter
     @FindBy(css = "#tbodyid tr")
     private List<ExtendedWebElement> cartItems;
 
@@ -53,17 +58,6 @@ public class CartPage extends AbstractPage {
 
     public CartPage(WebDriver driver) {
         super(driver);
-        setPageURL("path/to/cart/page"); // Set the URL to the cart page
-    }
-
-    public List<ExtendedWebElement> getCartItems() {
-        return cartItems;
-    }
-
-    public void deleteCartItem(WebElement item) {
-        int index = cartItems.indexOf(item);
-        WebElement deleteButton = deleteButtons.get(index);
-        deleteButton.click();
     }
 
     public int getNumberOfCartItems() {
@@ -79,12 +73,14 @@ public class CartPage extends AbstractPage {
     }
 
     public void fillOrderDetails(String name, String country, String city, String card, String month, String year) {
+        nameField.waitUntil(ExpectedConditions.elementToBeClickable(nameField.getElement()), 10);
         nameField.type(name);
         countryField.type(country);
         cityField.type(city);
         cardField.type(card);
         monthField.type(month);
         yearField.type(year);
+        purchaseOrder();
     }
 
     public void purchaseOrder() {
@@ -109,32 +105,45 @@ public class CartPage extends AbstractPage {
         }
     }
 
+    public void waitForPageToLoad() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> {
+            List<ExtendedWebElement> products = cartItems;
+            return products != null && !products.isEmpty() && products.get(0).isElementPresent();
+        });
+    }
+
     public boolean isItemInCart(String productName) {
         return getItemNamesList().stream()
-                .map(WebElement::getText)
+                .map(ExtendedWebElement::getText)
                 .anyMatch(itemName -> itemName.equals(productName));
     }
 
     public void removeAllItemsFromCart() {
-        while (!getCartItems().isEmpty()) {
-            WebElement item = getCartItems().get(0);
-            deleteCartItem(item);
-            if (!getCartItems().isEmpty()) {
-                waitForCartToReload(getCartItems().size());
+        int numberOfItems = getNumberOfCartItems();
+        for (int i = 0; i < numberOfItems; i++) {
+            waitUntil(ExpectedConditions.elementToBeClickable(deleteButtons.get(0).getElement()), 10);
+            deleteItemFromCartByIndex(0);
+            if (getNumberOfCartItems() > 0) {
+                waitForCartToReload(getNumberOfCartItems());
             }
         }
+        waitForCartToBeEmpty();
+    }
+
+    public void deleteItemFromCartByIndex(int index) {
+        List<ExtendedWebElement> deleteButtons = getDeleteButtons();
+        if (index >= 0 && index < deleteButtons.size()) {
+            deleteButtons.get(index).click();
+            waitForCartToReload(getNumberOfCartItems() - 1);
+        } else {
+            throw new IndexOutOfBoundsException("Invalid item index: " + index);
+        }
+    }
+
+    private List<ExtendedWebElement> getDeleteButtons() {
+        return deleteButtons;
+    }
+    private void waitForCartToBeEmpty() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> getCartItems().isEmpty());
     }
 }
-//$ mvn test -DsuiteXmlFile=testng.xml
-
-/*@BeforeTest
-    @Override
-    public WebDriver getDriver() {
-        DesiredCapabilities dc = new DesiredCapabilities();
-        dc.setCapability("platformName", "ANDROID");
-        dc.setCapability("appium:automationName", "UiAutomator2");
-        dc.setCapability("appium:deviceName", "Pixel_3");
-        dc.setCapability("appium:deviceType", "phone");
-        dc.setCapability("appium:udid", "emulator-5554");
-        dc.setCapability("browserName", "chrome");
-        dc.setCapability("chromedri*/

@@ -1,20 +1,16 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Selenium Grid Suite" parallel="tests" thread-count="2">
-    <listeners>
-        <listener class-name="com.solvd.listeners.TestListener" />
-    </listeners>
+<suite name="Selenium Grid Suite" parallel="methods" thread-count="2">
     <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
-        <parameter name="hubUrl" value="http://localhost:4444/wd/hub"/>
         <classes>
             <class name="com.solvd.tests.WebTest"/>
         </classes>
     </test>
     <test name="FirefoxTests">
         <parameter name="browser" value="firefox"/>
-        <parameter name="hubUrl" value="http://localhost:4444/wd/hub"/>
         <classes>
             <class name="com.solvd.tests.WebTest"/>
         </classes>
     </test>
 </suite>
+

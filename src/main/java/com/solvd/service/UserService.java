@@ -1,20 +1,20 @@
 package com.solvd.service;
 
 import com.solvd.model.User;
-import com.solvd.utils.ConfigReader;
+import com.zebrunner.carina.utils.R;
 
 public class UserService {
 
     public User createDefaultUser() {
         return User.builder()
-                .username(ConfigReader.getProperty("username"))
-                .password(ConfigReader.getProperty("password"))
-                .name("Test User")
-                .country("Test Country")
-                .city("Test City")
-                .creditCardNumber("1234567890123456")
-                .month("12")
-                .year("2024")
+                .username(R.TESTDATA.get("user.username"))
+                .password(R.TESTDATA.get("user.password"))
+                .name(R.TESTDATA.get("user.name"))
+                .country(R.TESTDATA.get("user.country"))
+                .city(R.TESTDATA.get("user.city"))
+                .creditCardNumber(R.TESTDATA.get("user.creditCardNumber"))
+                .month(R.TESTDATA.get("user.month"))
+                .year(R.TESTDATA.get("user.year"))
                 .build();
     }
 }
