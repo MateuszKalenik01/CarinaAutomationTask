@@ -1,21 +1,19 @@
 package com.solvd.pages;
 
-
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import com.zebrunner.carina.webdriver.gui.AbstractPage;
-import lombok.Getter;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ProductPage extends AbstractPage {
+public class ProductPage extends AbstractPageWithHeaderMenu {
 
     @FindBy(css = ".name")
     private ExtendedWebElement productName;
 
     @FindBy(css = ".btn-success")
     private ExtendedWebElement addToCartButton;
+
     @FindBy(css = ".btn-primary[data-target='#orderModal']")
     private ExtendedWebElement placeOrderButton;
 
@@ -43,12 +41,8 @@ public class ProductPage extends AbstractPage {
     @FindBy(css = ".sweet-alert .sa-success")
     private ExtendedWebElement successMessage;
 
-    @Getter
-    private HeaderMenu headerMenu;
-
     public ProductPage(WebDriver driver) {
         super(driver);
-        headerMenu = new HeaderMenu(driver);
     }
 
     public String getProductName() {
@@ -58,12 +52,11 @@ public class ProductPage extends AbstractPage {
     public void addToCart() {
         addToCartButton.click();
         handleAlert();
-
     }
+
     private void handleAlert() {
         waitUntil(ExpectedConditions.alertIsPresent(), 30);
         Alert jsAlert = getDriver().switchTo().alert();
         jsAlert.accept();
     }
-
 }

@@ -1,7 +1,6 @@
 package com.solvd.pages;
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class CartPage extends AbstractPage {
+public class CartPage extends AbstractPageWithHeaderMenu {
 
     @Getter
     @FindBy(css = "#tbodyid tr")
@@ -143,6 +142,7 @@ public class CartPage extends AbstractPage {
     private List<ExtendedWebElement> getDeleteButtons() {
         return deleteButtons;
     }
+
     private void waitForCartToBeEmpty() {
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> getCartItems().isEmpty());
     }
