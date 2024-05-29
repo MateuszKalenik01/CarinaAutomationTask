@@ -1,5 +1,7 @@
-package com.solvd.pages;
+package com.solvd.components;
 
+import com.solvd.pages.CartPage;
+import com.solvd.pages.common.CartPageBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.Alert;
@@ -8,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class HeaderMenu extends AbstractUIObject {
+public class HeaderMenu extends HeaderMenuBase  {
 
     @FindBy(css = ".nav-link[href='index.html']")
     private ExtendedWebElement homeButton;
@@ -47,23 +49,29 @@ public class HeaderMenu extends AbstractUIObject {
         super(driver);
     }
 
+    @Override
     public void clickHomeButton() {
         homeButton.click();
     }
-    public void clickLoginButton(){
+
+    @Override
+    public CartPageBase clickCartButton() {
+        cartButton.click();
+        return initPage(driver, CartPageBase.class);
+    }
+
+    @Override
+    public void clickLoginButton() {
         loginButton.click();
     }
 
-    public CartPage clickCartButton() {
-        cartButton.click();
-        return new CartPage(driver);
-    }
-
+    @Override
     public void clickLogoutButton() {
         logoutButton.waitUntil(ExpectedConditions.elementToBeClickable(logoutButton.getElement()), 10);
         logoutButton.click();
     }
 
+    @Override
     public void logIn(String username, String password) {
         clickLoginButton();
         usernameField.waitUntil(ExpectedConditions.elementToBeClickable(usernameField.getElement()), 10);
@@ -72,31 +80,39 @@ public class HeaderMenu extends AbstractUIObject {
         loginSubmitButton.click();
     }
 
+    @Override
     public boolean isUserLoggedIn() {
-
         return logoutButton.isElementPresent();
     }
 
+    @Override
     public boolean isUserLoggedOut() {
         return loginButton.isElementPresent();
     }
+
+    @Override
     public void clickSignUpButton() {
         signUpButton.click();
     }
 
+    @Override
     public void enterSignUpUsername(String username) {
         signUpUsernameField.waitUntil(ExpectedConditions.elementToBeClickable(signUpUsernameField.getElement()), 10);
         signUpUsernameField.type(username);
     }
 
+    @Override
     public void enterSignUpPassword(String password) {
         signUpPasswordField.waitUntil(ExpectedConditions.elementToBeClickable(signUpPasswordField.getElement()), 10);
         signUpPasswordField.type(password);
     }
 
+    @Override
     public void submitSignUp() {
         signUpSubmitButton.click();
     }
+
+    @Override
     public boolean isSignUpSuccessful() {
         try {
             waitUntil(ExpectedConditions.alertIsPresent(), 30);
@@ -108,5 +124,4 @@ public class HeaderMenu extends AbstractUIObject {
             return false;
         }
     }
-
 }

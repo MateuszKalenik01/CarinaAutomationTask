@@ -1,7 +1,8 @@
 package com.solvd.pages;
 
+import com.solvd.pages.common.CartPageBase;
+import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,9 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class CartPage extends AbstractPageWithHeaderMenu {
+@DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = CartPageBase.class)
+public class CartPage extends CartPageBase {
 
-    @Getter
     @FindBy(css = "#tbodyid tr")
     private List<ExtendedWebElement> cartItems;
 
@@ -59,18 +60,22 @@ public class CartPage extends AbstractPageWithHeaderMenu {
         super(driver);
     }
 
+    @Override
     public int getNumberOfCartItems() {
-        return getCartItems().size();
+        return cartItems.size();
     }
 
+    @Override
     public String getTotalPrice() {
         return totalPrice.getText();
     }
 
+    @Override
     public void placeOrder() {
         placeOrderButton.click();
     }
 
+    @Override
     public void fillOrderDetails(String name, String country, String city, String card, String month, String year) {
         nameField.waitUntil(ExpectedConditions.elementToBeClickable(nameField.getElement()), 10);
         nameField.type(name);
@@ -86,37 +91,27 @@ public class CartPage extends AbstractPageWithHeaderMenu {
         purchaseButton.click();
     }
 
+    @Override
     public boolean isPurchaseSuccessful() {
         return successMessage.isElementPresent();
     }
 
+    @Override
     public void closeSuccessAlert() {
         confirmButton.click();
     }
 
-    public List<ExtendedWebElement> getItemNamesList() {
-        return itemNames;
-    }
-
-    public void waitForCartToReload(int expectedNumberOfItems) {
-        if (expectedNumberOfItems > 0) {
-            waitUntil(driver -> getCartItems().size() == expectedNumberOfItems, 10);
-        }
-    }
-
-    public void waitForPageToLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> {
-            List<ExtendedWebElement> products = cartItems;
-            return products != null && !products.isEmpty() && products.get(0).isElementPresent();
-        });
-    }
-
+    @Override
     public boolean isItemInCart(String productName) {
         return getItemNamesList().stream()
                 .map(ExtendedWebElement::getText)
                 .anyMatch(itemName -> itemName.equals(productName));
     }
+    public List<ExtendedWebElement> getItemNamesList() {
+        return itemNames;
+    }
 
+    @Override
     public void removeAllItemsFromCart() {
         int numberOfItems = getNumberOfCartItems();
         for (int i = 0; i < numberOfItems; i++) {
@@ -129,7 +124,24 @@ public class CartPage extends AbstractPageWithHeaderMenu {
         waitForCartToBeEmpty();
     }
 
-    public void deleteItemFromCartByIndex(int index) {
+    private void waitForCartToReload(int expectedNumberOfItems) {
+        if (expectedNumberOfItems > 0) {
+            waitUntil(driver -> cartItems.size() == expectedNumberOfItems, 10);
+        }
+    }
+    @Override
+    public void waitForPageToLoad() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> {
+            List<ExtendedWebElement> products = cartItems;
+            return products != null && !products.isEmpty() && products.get(0).isElementPresent();
+        });
+    }
+
+    private void waitForCartToBeEmpty() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> cartItems.isEmpty());
+    }
+
+    private void deleteItemFromCartByIndex(int index) {
         List<ExtendedWebElement> deleteButtons = getDeleteButtons();
         if (index >= 0 && index < deleteButtons.size()) {
             deleteButtons.get(index).click();
@@ -138,12 +150,8 @@ public class CartPage extends AbstractPageWithHeaderMenu {
             throw new IndexOutOfBoundsException("Invalid item index: " + index);
         }
     }
-
     private List<ExtendedWebElement> getDeleteButtons() {
         return deleteButtons;
     }
 
-    private void waitForCartToBeEmpty() {
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> getCartItems().isEmpty());
-    }
 }

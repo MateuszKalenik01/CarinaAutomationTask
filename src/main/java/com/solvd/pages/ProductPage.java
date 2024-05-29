@@ -1,12 +1,15 @@
 package com.solvd.pages;
 
+import com.solvd.pages.common.ProductPageBase;
+import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ProductPage extends AbstractPageWithHeaderMenu {
+@DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = ProductPageBase.class)
+public class ProductPage extends ProductPageBase {
 
     @FindBy(css = ".name")
     private ExtendedWebElement productName;
@@ -45,10 +48,12 @@ public class ProductPage extends AbstractPageWithHeaderMenu {
         super(driver);
     }
 
+    @Override
     public String getProductName() {
         return productName.getText();
     }
 
+    @Override
     public void addToCart() {
         addToCartButton.click();
         handleAlert();

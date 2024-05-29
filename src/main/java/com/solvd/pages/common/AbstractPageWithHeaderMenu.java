@@ -1,5 +1,6 @@
-package com.solvd.pages;
+package com.solvd.pages.common;
 
+import com.solvd.components.HeaderMenu;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;

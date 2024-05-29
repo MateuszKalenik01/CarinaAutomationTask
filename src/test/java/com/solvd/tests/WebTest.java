@@ -1,10 +1,11 @@
 package com.solvd.tests;
 
-
 import com.solvd.model.User;
 import com.solvd.pages.CartPage;
 import com.solvd.pages.HomePage;
 import com.solvd.pages.ProductPage;
+import com.solvd.pages.common.CartPageBase;
+import com.solvd.pages.common.ProductPageBase;
 import com.solvd.service.UserService;
 import com.zebrunner.carina.core.AbstractTest;
 import com.zebrunner.carina.utils.R;
@@ -42,10 +43,10 @@ public class WebTest extends AbstractTest {
     public void addToCart() {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
-        ProductPage productPage = homePage.showProductDetails();
+        ProductPageBase productPage = homePage.showProductDetails();
         String productName = productPage.getProductName();
         productPage.addToCart();
-        CartPage cartPage = productPage.getHeaderMenu().clickCartButton();
+        CartPageBase cartPage = productPage.getHeaderMenu().clickCartButton();
         cartPage.waitForPageToLoad();
         Assert.assertTrue(cartPage.isItemInCart(productName), "The item is not found in the cart.");
     }
@@ -54,9 +55,9 @@ public class WebTest extends AbstractTest {
     public void completePurchase() {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
-        ProductPage productPage = homePage.showProductDetails();
+        ProductPageBase productPage = homePage.showProductDetails();
         productPage.addToCart();
-        CartPage cartPage = productPage.getHeaderMenu().clickCartButton();
+        CartPageBase cartPage = productPage.getHeaderMenu().clickCartButton();
         cartPage.placeOrder();
         UserService userService = new UserService();
         User user = userService.createDefaultUser();
@@ -89,7 +90,7 @@ public class WebTest extends AbstractTest {
     public void addAndRemoveItemsFromCart() {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
-        ProductPage productPage = homePage.showProductDetails();
+        ProductPageBase productPage = homePage.showProductDetails();
         productPage.addToCart();
         homePage.getHeaderMenu().clickHomeButton();
 
@@ -97,7 +98,7 @@ public class WebTest extends AbstractTest {
         productPage.addToCart();
         homePage.getHeaderMenu().clickHomeButton();
 
-        CartPage cartPage = homePage.getHeaderMenu().clickCartButton();
+        CartPageBase cartPage = homePage.getHeaderMenu().clickCartButton();
         cartPage.waitForPageToLoad();
         int initialNumberOfItems = cartPage.getNumberOfCartItems();
         Assert.assertTrue(initialNumberOfItems != 0, "Items have not been added correctly. Actual: " + initialNumberOfItems);
@@ -108,4 +109,3 @@ public class WebTest extends AbstractTest {
         Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
     }
 }
-

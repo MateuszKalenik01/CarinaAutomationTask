@@ -1,15 +1,18 @@
 package com.solvd.pages;
 
+import com.solvd.pages.common.HomePageBase;
+import com.solvd.pages.common.ProductPageBase;
+import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
-public class HomePage extends AbstractPageWithHeaderMenu {
+@DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = HomePageBase.class)
+public class HomePage extends HomePageBase {
 
     @FindBy(css = "#tbodyid .card .card-title a")
     private List<ExtendedWebElement> productList;
@@ -18,11 +21,12 @@ public class HomePage extends AbstractPageWithHeaderMenu {
         super(driver);
     }
 
-    public ProductPage showProductDetails() {
+    @Override
+    public ProductPageBase showProductDetails() {
         waitForPageToLoad();
         ExtendedWebElement randomProduct = selectRandomProduct();
         randomProduct.click();
-        return new ProductPage(driver);
+        return initPage(driver, ProductPageBase.class);
     }
 
     private void waitForPageToLoad() {
