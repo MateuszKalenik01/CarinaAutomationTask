@@ -13,9 +13,11 @@ public abstract class HomePageBase extends AbstractPageMenu {
 
     @FindBy(css = "#tbodyid .card .card-title a")
     private List<ExtendedWebElement> productList;
-
+    @FindBy(id = "cartur")
+    private ExtendedWebElement cartButton;
     protected HomePageBase(WebDriver driver) {
         super(driver);
+        setUiLoadedMarker(cartButton);
     }
 
     public ProductPageBase showProductDetails() {

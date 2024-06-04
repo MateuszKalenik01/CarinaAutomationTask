@@ -43,6 +43,7 @@ public abstract class ProductPageBase extends AbstractPageMenu {
 
     protected ProductPageBase(WebDriver driver) {
         super(driver);
+        setUiLoadedMarker(productName);
     }
 
     public String getProductName() {

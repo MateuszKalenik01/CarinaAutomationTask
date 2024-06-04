@@ -55,6 +55,8 @@ public abstract class CartPageBase extends AbstractPageMenu {
 
     protected CartPageBase(WebDriver driver) {
         super(driver);
+        setUiLoadedMarker(purchaseButton);
+
     }
 
     public int getNumberOfCartItems() {
