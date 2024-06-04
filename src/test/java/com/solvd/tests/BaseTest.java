@@ -1,39 +1,21 @@
 package com.solvd.tests;
 
 import com.solvd.model.User;
-import com.solvd.pages.CartPage;
-import com.solvd.pages.HomePage;
-import com.solvd.pages.ProductPage;
 import com.solvd.pages.common.CartPageBase;
+import com.solvd.pages.common.HomePageBase;
 import com.solvd.pages.common.ProductPageBase;
 import com.solvd.service.UserService;
 import com.zebrunner.carina.core.AbstractTest;
 import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
 
-public class WebTest extends AbstractTest {
-    @Parameters({"browser"})
-    @BeforeClass
-    public void setUp(String browser) {
-        R.CONFIG.put("capabilities.browserName", browser);
-    }
-
-    @AfterClass
-    public void tearDown() {
-        if (getDriver() != null) {
-            getDriver().quit();
-        }
-    }
-
+public class BaseTest extends AbstractTest {
     @Test(testName = "TC002", threadPoolSize = 1, invocationCount = 1)
     public void validUserLoginVerification() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         homePage.getHeaderMenu().logIn(R.TESTDATA.get("user.username"), R.TESTDATA.get("user.password"));
         Assert.assertTrue(homePage.getHeaderMenu().isUserLoggedIn(), "The user is not logged in successfully. Welcome message is not displayed.");
@@ -41,7 +23,7 @@ public class WebTest extends AbstractTest {
 
     @Test(testName = "TC001", threadPoolSize = 1, invocationCount = 1)
     public void addToCart() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         ProductPageBase productPage = homePage.showProductDetails();
         String productName = productPage.getProductName();
@@ -53,7 +35,7 @@ public class WebTest extends AbstractTest {
 
     @Test(testName = "TC003", threadPoolSize = 1, invocationCount = 1)
     public void completePurchase() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         ProductPageBase productPage = homePage.showProductDetails();
         productPage.addToCart();
@@ -67,7 +49,7 @@ public class WebTest extends AbstractTest {
 
     @Test(testName = "TC004", threadPoolSize = 1, invocationCount = 1)
     public void userLogoutVerification() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         homePage.getHeaderMenu().logIn(R.TESTDATA.get("user.username"), R.TESTDATA.get("user.password"));
         homePage.getHeaderMenu().clickLogoutButton();
@@ -76,7 +58,7 @@ public class WebTest extends AbstractTest {
 
     @Test(testName = "TC005", threadPoolSize = 1, invocationCount = 1)
     public void validNewUserRegistration() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         String uniqueUsername = R.TESTDATA.get("user.username") + UUID.randomUUID().toString().substring(0, 8);
         homePage.getHeaderMenu().clickSignUpButton();
@@ -88,7 +70,7 @@ public class WebTest extends AbstractTest {
 
     @Test(testName = "TC006", threadPoolSize = 1, invocationCount = 1)
     public void addAndRemoveItemsFromCart() {
-        HomePage homePage = new HomePage(getDriver());
+        HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         ProductPageBase productPage = homePage.showProductDetails();
         productPage.addToCart();

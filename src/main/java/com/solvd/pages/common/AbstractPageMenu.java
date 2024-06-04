@@ -7,12 +7,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
 @Getter
-public abstract class AbstractPageWithHeaderMenu extends AbstractPage {
+public abstract class AbstractPageMenu extends AbstractPage {
 
     @FindBy(id = "navbarExample")
-    protected HeaderMenu headerMenu;
+    private HeaderMenu headerMenu;
 
-    public AbstractPageWithHeaderMenu(WebDriver driver) {
+    public AbstractPageMenu(WebDriver driver) {
         super(driver);
         this.headerMenu = new HeaderMenu(driver);
     }

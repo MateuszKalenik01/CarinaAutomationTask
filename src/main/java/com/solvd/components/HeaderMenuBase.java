@@ -2,37 +2,31 @@ package com.solvd.components;
 
 import com.solvd.pages.common.CartPageBase;
 import com.zebrunner.carina.utils.factory.ICustomTypePageFactory;
-import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
 
-public abstract class HeaderMenuBase extends AbstractUIObject implements ICustomTypePageFactory {
+public interface HeaderMenuBase extends ICustomTypePageFactory {
 
-    protected HeaderMenuBase(WebDriver driver) {
-        super(driver);
-    }
+    void clickHomeButton();
 
-    public abstract void clickHomeButton();
+    CartPageBase clickCartButton();
 
-    public abstract CartPageBase clickCartButton();
+    void clickLoginButton();
 
-    public abstract void clickLoginButton();
+    void clickLogoutButton();
 
-    public abstract void clickLogoutButton();
+    void logIn(String username, String password);
 
-    public abstract void logIn(String username, String password);
+    boolean isUserLoggedIn();
 
-    public abstract boolean isUserLoggedIn();
+    boolean isUserLoggedOut();
 
-    public abstract boolean isUserLoggedOut();
+    void clickSignUpButton();
 
-    public abstract void clickSignUpButton();
+    void enterSignUpUsername(String username);
 
-    public abstract void enterSignUpUsername(String username);
+    void enterSignUpPassword(String password);
 
-    public abstract void enterSignUpPassword(String password);
+    void submitSignUp();
 
-    public abstract void submitSignUp();
-
-    public abstract boolean isSignUpSuccessful();
+    boolean isSignUpSuccessful();
 }
+

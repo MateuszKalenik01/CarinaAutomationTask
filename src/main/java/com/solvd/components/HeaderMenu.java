@@ -1,6 +1,5 @@
 package com.solvd.components;
 
-import com.solvd.pages.CartPage;
 import com.solvd.pages.common.CartPageBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
@@ -10,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class HeaderMenu extends HeaderMenuBase  {
+public class HeaderMenu extends AbstractUIObject implements HeaderMenuBase {
 
     @FindBy(css = ".nav-link[href='index.html']")
     private ExtendedWebElement homeButton;
@@ -32,6 +31,7 @@ public class HeaderMenu extends HeaderMenuBase  {
 
     @FindBy(css = "button[onclick='logIn()']")
     private ExtendedWebElement loginSubmitButton;
+
     @FindBy(id = "signin2")
     private ExtendedWebElement signUpButton;
 
@@ -43,8 +43,10 @@ public class HeaderMenu extends HeaderMenuBase  {
 
     @FindBy(css = "button[onclick='register()']")
     private ExtendedWebElement signUpSubmitButton;
+
     @FindBy(css = "div.modal.fade.show")
     private ExtendedWebElement alertModal;
+
     public HeaderMenu(WebDriver driver) {
         super(driver);
     }

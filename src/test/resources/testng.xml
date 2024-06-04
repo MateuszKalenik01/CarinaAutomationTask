@@ -3,13 +3,13 @@
     <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.solvd.tests.WebTest"/>
+            <class name="com.solvd.tests.desktop.WebTest"/>
         </classes>
     </test>
     <test name="FirefoxTests">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="com.solvd.tests.WebTest"/>
+            <class name="com.solvd.tests.desktop.WebTest"/>
         </classes>
     </test>
 </suite>
