@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class HeaderMenu extends AbstractUIObject implements HeaderMenuBase {
+public class HeaderMenu extends AbstractUIObject implements InterfaceMenu {
 
     @FindBy(css = ".nav-link[href='index.html']")
     private ExtendedWebElement homeButton;

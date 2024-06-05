@@ -3,7 +3,7 @@ package com.solvd.components;
 import com.solvd.pages.common.CartPageBase;
 import com.zebrunner.carina.utils.factory.ICustomTypePageFactory;
 
-public interface HeaderMenuBase extends ICustomTypePageFactory {
+public interface InterfaceMenu extends ICustomTypePageFactory {
 
     void clickHomeButton();
 
