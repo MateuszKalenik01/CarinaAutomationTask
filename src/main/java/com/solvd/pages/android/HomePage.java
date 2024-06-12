@@ -1,4 +1,4 @@
-package com.solvd.pages.mobile;
+package com.solvd.pages.android;
 
 import com.solvd.pages.common.HomePageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
