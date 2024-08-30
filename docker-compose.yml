@@ -1,0 +1,46 @@
+services:
+  selenoid:
+    platform: linux/amd64
+    network_mode: bridge
+    image: aerokube/selenoid:latest-release
+    volumes:
+      - "$PWD/config:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "$PWD/config/video:/opt/selenoid/video"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/config/video
+      - ENABLE_VIDEO=true
+    command:
+      - "-limit"
+      - "5"
+      - "-conf"
+      - "/etc/selenoid/browsers.json"
+      - "-video-output-dir"
+      - "/opt/selenoid/video"
+      - "-log-output-dir"
+      - "/opt/selenoid/logs"
+    ports:
+      - "4444:4444"
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui:latest-release
+    network_mode: bridge
+    links:
+      - selenoid
+    ports:
+      - "8080:8080"
+    command:
+      - "--selenoid-uri=http://selenoid:4444"
+
+  ggr:
+    image: aerokube/ggr:latest
+    platform: linux/amd64
+    network_mode: bridge
+    ports:
+      - 4445:4444
+    links:
+      - selenoid
+    volumes:
+      - ./grid-router/quota:/etc/grid-router/quota
+      - $PWD/grid-router/users/users.htpasswd:/etc/grid-router/users.htpasswd
+
