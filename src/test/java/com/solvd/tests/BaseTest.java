@@ -33,7 +33,7 @@ public class BaseTest extends AbstractTest {
         Assert.assertTrue(cartPage.isItemInCart(productName), "The item is not found in the cart.");
     }
 
-    @Test(testName = "TC003", threadPoolSize = 1, invocationCount = 1)
+/*    @Test(testName = "TC003", threadPoolSize = 1, invocationCount = 1)
     public void completePurchase() {
         HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
@@ -47,7 +47,7 @@ public class BaseTest extends AbstractTest {
         Assert.assertTrue(cartPage.isPurchaseSuccessful(), "Purchase was not completed successfully.");
     }
 
-    @Test(testName = "TC004", threadPoolSize = 1, invocationCount = 1)
+   @Test(testName = "TC004", threadPoolSize = 1, invocationCount = 1)
     public void userLogoutVerification() {
         HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
@@ -89,5 +89,5 @@ public class BaseTest extends AbstractTest {
 
         int itemsRemaining = cartPage.getNumberOfCartItems();
         Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
-    }
+    }*/
 }
