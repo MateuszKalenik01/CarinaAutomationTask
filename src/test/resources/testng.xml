@@ -4,6 +4,12 @@
     <parameter name="jenkinsJobName" value="CarinaAutomationTask"/>
     <parameter name="jenkinsJobType" value="web"/>
     <parameter name="jenkinsEnvironments" value="TEST"/>
+
+    <parameter name="jenkinsRegressionPipeline" value="carina-project-regression"/>
+    <parameter name="jenkinsRegressionScheduling" value="H 10 * * *" />
+    <parameter name="jenkinsRegressionMatrix" value="env:DEMO,branch:main,browserName:chrome;branch:env:TEST,main,browserName:firefox"/>
+    <parameter name="capabilities.provider" value="selenium"/>
+
     <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
         <classes>
