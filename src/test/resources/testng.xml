@@ -6,7 +6,7 @@
     <parameter name="jenkinsEnvironments" value="TEST"/>
 
     <parameter name="jenkinsRegressionPipeline" value="carina-project-regression"/>
-    <parameter name="jenkinsRegressionScheduling" value="35 11 * * *" />
+    <parameter name="jenkinsRegressionScheduling" value="45 11 * * *" />
     <parameter name="jenkinsRegressionMatrix" value="branch:main,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub,browserName:chrome;branch:demo,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub,browserName:firefox"/>
     <parameter name="capabilities.provider" value="selenium"/>
 
