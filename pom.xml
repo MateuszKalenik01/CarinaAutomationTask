@@ -10,132 +10,54 @@
     <packaging>jar</packaging>
     <name>SeleniumTest</name>
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <carina-core_version>1.2.10</carina-core_version>
-        <carina-agent-core_version>1.9.8</carina-agent-core_version>
-        <carina-testngagent_version>1.9.8</carina-testngagent_version>
-        <carina-utils_version>1.2.6</carina-utils_version>
-        <carina-dataprovider.version>1.2.4</carina-dataprovider.version>
-        <carina-api.version>1.2.4</carina-api.version>
-        <carina-aws-s3.version>1.2.5</carina-aws-s3.version>
-        <java.version>11</java.version>
-        <zebrunner-agent.version>1.9.3</zebrunner-agent.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <log4j-api.version>2.17.1</log4j-api.version>
-        <log4j-core.version>2.17.1</log4j-core.version>
-        <byte-buddy.version>1.12.10</byte-buddy.version>
-        <mybatis.version>3.5.6</mybatis.version>
-        <suite>UsersActionsSuiteCrossBrowsers</suite>
+        <testng.ver>7.10.2</testng.ver>
+        <slf4j.ver>1.7.36</slf4j.ver>
+        <log4j.ver>2.23.1</log4j.ver>
+        <lombok.ver>1.18.32</lombok.ver>
+        <carina-core.ver>1.2.10</carina-core.ver>
+        <carina-api.ver>1.2.4</carina-api.ver>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.zebrunner</groupId>
-            <artifactId>carina-core</artifactId>
-            <version>${carina-core_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zebrunner</groupId>
-            <artifactId>carina-webdriver</artifactId>
-            <version>1.2.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zebrunner</groupId>
-            <artifactId>carina-utils</artifactId>
-            <version>${carina-utils_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zebrunner</groupId>
-            <artifactId>carina-dataprovider</artifactId>
-            <version>${carina-dataprovider.version}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.ver}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.zebrunner</groupId>
             <artifactId>carina-api</artifactId>
-            <version>${carina-api.version}</version>
+            <version>${carina-api.ver}</version>
         </dependency>
         <dependency>
             <groupId>com.zebrunner</groupId>
-            <artifactId>carina-aws-s3</artifactId>
-            <version>${carina-aws-s3.version}</version>
+            <artifactId>carina-core</artifactId>
+            <version>${carina-core.ver}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>${byte-buddy.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.ver}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <release>${java.version}</release>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>com.zebrunner</groupId>
-                            <artifactId>agent-core</artifactId>
-                            <version>${zebrunner-agent.version}</version>
-                            <outputDirectory>${project.build.directory}/agent</outputDirectory>
-                            <destFileName>zebrunner-agent.jar</destFileName>
-                        </artifactItem>
-                    </artifactItems>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M6</version>
+                <version>3.2.5</version>
                 <configuration>
-                    <argLine>-javaagent:${project.build.directory}/agent/zebrunner-agent.jar</argLine>
-                    <useSystemClassLoader>false</useSystemClassLoader>
                     <suiteXmlFiles>
-                        <suiteXmlFile>${project.build.directory}/test-classes/testng_suites/${suite}.xml</suiteXmlFile>
+                        <suiteXmlFile>${project.build.directory}/test-classes/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

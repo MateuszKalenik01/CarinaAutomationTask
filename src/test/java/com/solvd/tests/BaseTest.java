@@ -21,7 +21,7 @@ public class BaseTest extends AbstractTest {
         Assert.assertTrue(homePage.getHeaderMenu().isUserLoggedIn(), "The user is not logged in successfully. Welcome message is not displayed.");
     }
 
-   /* @Test(testName = "TC001", threadPoolSize = 1, invocationCount = 1)
+    @Test(testName = "TC001", threadPoolSize = 1, invocationCount = 1)
     public void addToCart() {
         HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
@@ -89,5 +89,5 @@ public class BaseTest extends AbstractTest {
 
         int itemsRemaining = cartPage.getNumberOfCartItems();
         Assert.assertEquals(itemsRemaining, 0, "Not all items were removed from the cart. Actual items left: " + itemsRemaining);
-    }*/
+    }
 }
