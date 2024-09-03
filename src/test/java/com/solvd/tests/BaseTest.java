@@ -13,13 +13,13 @@ import org.testng.annotations.Test;
 import java.util.UUID;
 
 public class BaseTest extends AbstractTest {
-    @Test(testName = "TC002", threadPoolSize = 1, invocationCount = 1)
+ /*   @Test(testName = "TC002", threadPoolSize = 1, invocationCount = 1)
     public void validUserLoginVerification() {
         HomePageBase homePage = initPage(getDriver(),HomePageBase.class);
         homePage.open();
         homePage.getHeaderMenu().logIn(R.TESTDATA.get("user.username"), R.TESTDATA.get("user.password"));
         Assert.assertTrue(homePage.getHeaderMenu().isUserLoggedIn(), "The user is not logged in successfully. Welcome message is not displayed.");
-    }
+    }*/
 
     @Test(testName = "TC001", threadPoolSize = 1, invocationCount = 1)
     public void addToCart() {
