@@ -6,12 +6,18 @@
     <parameter name="jenkinsEnvironments" value="TEST"/>
 
     <parameter name="jenkinsRegressionPipeline" value="carina-project-regression"/>
-    <parameter name="jenkinsRegressionScheduling" value="4 12 * * *" />
-    <parameter name="jenkinsRegressionMatrix" value="branch:main,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub;branch:demo,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub"/>
+    <parameter name="jenkinsRegressionScheduling" value="7 12 * * *" />
+    <parameter name="jenkinsRegressionMatrix" value="branch:main,browserName:firefox,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub;branch:demo,selenium_url:http://testuser:testpassword@host.docker.internal:4445/wd/hub,browserName:firefox"/>
     <parameter name="capabilities.provider" value="selenium"/>
 
     <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.solvd.tests.desktop.WebTest"/>
+        </classes>
+    </test>
+    <test name="FirefoxTests">
+        <parameter name="browser" value="firefox"/>
         <classes>
             <class name="com.solvd.tests.desktop.WebTest"/>
         </classes>
