@@ -6,7 +6,7 @@
     <parameter name="jenkinsEnvironments" value="TEST"/>
 
     <parameter name="jenkinsRegressionPipeline" value="carina-project-regression"/>
-    <parameter name="jenkinsRegressionScheduling" value="19 10 * * *" />
+    <parameter name="jenkinsRegressionScheduling" value="24 10 * * *" />
     <parameter name="jenkinsRegressionMatrix" value="branch:main;branch:demo"/>
     <parameter name="capabilities.provider" value="selenium"/>
 
