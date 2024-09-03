@@ -11,4 +11,4 @@ Ensure you have the following software installed:
 - Selenium Server (Standalone)
 - A browser (Chrome, Firefox)
 - Docker (optional, for running Selenium Grid)
-- Added Jenkins te
+- Added Jenkins tes
